@@ -41,14 +41,12 @@ class PayOutActivity : AppCompatActivity() {
         setUserData()
 
         val intent = intent
-        foodItemName = intent.getStringArrayListExtra("FoodItemName") as ArrayList<String>
-        foodItemPrice = intent.getStringArrayListExtra("FoodItemPrice") as ArrayList<String>
-        foodItemImage = intent.getStringArrayListExtra("FoodItemImage") as ArrayList<String>
-        foodItemDescription =
-            intent.getStringArrayListExtra("FoodItemDescription") as ArrayList<String>
-        foodItemIngredient =
-            intent.getStringArrayListExtra("FoodItemIngredient") as ArrayList<String>
-        foodItemQuantities = intent.getIntegerArrayListExtra("FoodItemQuantities") as ArrayList<Int>
+        foodItemName = intent.getStringArrayListExtra("FoodItemName") ?: arrayListOf()
+        foodItemPrice = intent.getStringArrayListExtra("FoodItemPrice") ?: arrayListOf()
+        foodItemImage = intent.getStringArrayListExtra("FoodItemImage") ?: arrayListOf()
+        foodItemDescription = intent.getStringArrayListExtra("FoodItemDescription") ?: arrayListOf()
+        foodItemIngredient = intent.getStringArrayListExtra("FoodItemIngredient") ?: arrayListOf()
+        foodItemQuantities = intent.getIntegerArrayListExtra("FoodItemQuantities") ?: arrayListOf()
 
         totalAmount = calculateTotalAmount().toString() + "₹"
         binding.totalAmount.isEnabled = false
@@ -61,7 +59,7 @@ class PayOutActivity : AppCompatActivity() {
             address= binding.address.text.toString().trim()
             phone = binding.phone.text.toString().trim()
 
-            if (name.isBlank()&& address.isBlank()&& phone.isBlank()){
+            if (name.isBlank() || address.isBlank() || phone.isBlank()){
                 Toast.makeText(this, "Please Enter All The Details", Toast.LENGTH_SHORT).show()
             }else{
                 placeOrder()
@@ -123,16 +121,10 @@ class PayOutActivity : AppCompatActivity() {
         var totalAmount = 0
 
         for (i in 0 until foodItemPrice.size) {
-
             val price = foodItemPrice[i]
-
-            val priceIntValue = if (price.endsWith("₹")) {
-                price.dropLast(1).toInt()
-            } else {
-                price.toInt()
-            }
-
             val quantity = foodItemQuantities[i]
+
+            val priceIntValue = price.replace("[^0-9]".toRegex(), "").toInt()
             totalAmount += priceIntValue * quantity
         }
 
