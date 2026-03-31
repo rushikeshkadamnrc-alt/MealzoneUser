@@ -48,37 +48,38 @@ class HomeFragment : Fragment() {
     private fun retrieveAndDispalyPopularitems() {
         database = FirebaseDatabase.getInstance()
         val foodRef: DatabaseReference = database.reference.child("menu")
+
         menuItems = mutableListOf()
 
+        // ✅ Adapter pehle set karo (EMPTY)
+        val adapter = MenuAdapter(menuItems, requireContext())
+        binding.PopularRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.PopularRecyclerView.adapter = adapter
+
+        // ✅ Fast listener
         foodRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+
+                menuItems.clear()
+
                 for (foodSnapshot in snapshot.children) {
-                    val menuItem = foodSnapshot.getValue(MenuItem::class.java)
-                    menuItem?.let { menuItems.add(it) }
+                    val item = foodSnapshot.getValue(MenuItem::class.java)
+                    if (item != null) {
+                        menuItems.add(item)
+                    }
                 }
-                randomPopularItems()
+
+                // ✅ random 6 items
+                val randomItems = menuItems.shuffled().take(6)
+
+                // ✅ direct update
+                adapter.updateData(randomItems)
             }
 
-            private fun randomPopularItems() {
-                val index = menuItems.indices.toList().shuffled()
-                val numItemToShow = 6
-                val subsetmenuItems = index.take(numItemToShow).map { menuItems[it] }
-
-                setPopularItemsAdapter(subsetmenuItems)
-            }
-
-            private fun setPopularItemsAdapter(subsetmenuItems: List<MenuItem>) {
-                val adapter = MenuAdapter(subsetmenuItems.toMutableList(), requireContext())
-                binding.PopularRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                binding.PopularRecyclerView.adapter = adapter
-
-            }
-
-            override fun onCancelled(p0: DatabaseError) {
-                TODO("Not yet implemented")
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
             }
         })
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mealzone.R
@@ -104,9 +105,11 @@ class HistoryFragment : Fragment() {
 
             val isOrderIsAccepted = listOfOrderItem.firstOrNull()?.orderAccepted ?: false
             if (isOrderIsAccepted) {
-                binding.orderedStatus.background.setTint(
-                    androidx.core.content.ContextCompat.getColor(requireContext(), R.color.textColor)
-                )
+                context?.let {
+                    binding.orderedStatus.background.setTint(
+                        ContextCompat.getColor(it, R.color.textColor)
+                    )
+                }
                 binding.receivedButton.visibility = View.VISIBLE
             }
         }
@@ -123,8 +126,11 @@ class HistoryFragment : Fragment() {
             images.add(listOfOrderItem[i].foodImages?.firstOrNull() ?: "")
         }
 
-        buyAgainAdapter = BuyAgainAdapter(names, prices, images, requireContext())
-        binding.buyAgainRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        context?.let {
+            buyAgainAdapter = BuyAgainAdapter(names, prices, images, it)
+            binding.buyAgainRecycleView.layoutManager = LinearLayoutManager(it)
+            binding.buyAgainRecycleView.adapter = buyAgainAdapter
+        }
         binding.buyAgainRecycleView.adapter = buyAgainAdapter
     }
 }
