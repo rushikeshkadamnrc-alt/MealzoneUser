@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".MenuBottomSheetFragment">
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/buttonback"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/arrow_left_svg"/>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/menuTitle"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/yeonsung_regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Menu" />
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/menuRecyclerView"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
