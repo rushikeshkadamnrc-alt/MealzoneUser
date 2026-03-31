@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
         val foodRef: DatabaseReference = database.reference.child("menu")
         menuItems = mutableListOf()
 
-        foodRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        foodRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (foodSnapshot in snapshot.children) {
                     val menuItem = foodSnapshot.getValue(MenuItem::class.java)
@@ -68,7 +68,7 @@ class HomeFragment : Fragment() {
             }
 
             private fun setPopularItemsAdapter(subsetmenuItems: List<MenuItem>) {
-                val adapter = MenuAdapter(subsetmenuItems, requireContext())
+                val adapter = MenuAdapter(subsetmenuItems.toMutableList(), requireContext())
                 binding.PopularRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                 binding.PopularRecyclerView.adapter = adapter
 

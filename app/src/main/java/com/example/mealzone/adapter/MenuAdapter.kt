@@ -11,7 +11,7 @@ import com.example.mealzone.model.MenuItem
 import com.example.mealzone.DetailsActivity
 
 class MenuAdapter(
-    private val menuItems:List<MenuItem>,
+    private val menuItems: MutableList<MenuItem>,
     private val requireContext: Context) :RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
 

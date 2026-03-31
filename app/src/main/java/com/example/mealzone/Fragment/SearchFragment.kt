@@ -52,7 +52,7 @@ class SearchFragment : Fragment() {
 
     // Class-level function for adapter
     private fun setAdapter(menuItems: List<MenuItem>) {
-        adapter = MenuAdapter(menuItems, requireContext())
+        adapter = MenuAdapter(menuItems.toMutableList(), requireContext())
         binding.menuRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.menuRecyclerView.adapter = adapter
     }
